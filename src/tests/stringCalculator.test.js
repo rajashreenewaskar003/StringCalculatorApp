@@ -45,4 +45,20 @@ describe('String Calculator', () => {
   it('falls back to default delimiters if custom delimiter is missing', () => {
     expect(add("//\n1,2,3")).toBe(6);
   });
+
+  it('throws error for single negative number', () => {
+    expect(() => add("1,-2,3")).toThrow("negative numbers not allowed -2");
+  });
+
+  it('throws error for multiple negative numbers', () => {
+    expect(() => add("4,-1,-5,6")).toThrow("negative numbers not allowed -1,-5");
+  });
+
+  it('throws error for negative numbers with custom delimiter', () => {
+    expect(() => add("//;\n-1;2;-3")).toThrow("negative numbers not allowed -1,-3");
+  });
+
+  it('throws error for negative numbers with newline delimiter', () => {
+    expect(() => add("1\n-2\n-3")).toThrow("negative numbers not allowed -2,-3");
+  });
 });

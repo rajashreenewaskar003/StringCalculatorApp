@@ -3,7 +3,7 @@ export function add(numbers) {
     return 0;
   }
 
-   // Replace literal "\n" with actual newline if needed
+ // Replace literal "\n" with actual newline if needed
   const sanitized = numbers.replace(/\\n/g, '\n');
 
   let delimiter = /[,\n]/; // default delimiters
@@ -22,8 +22,14 @@ export function add(numbers) {
     }
   }
 
-  return numberSection
+  const numbersArray = numberSection
     .split(delimiter)
-    .map(n => Number(n.trim()))
-    .reduce((sum, n) => sum + n, 0);
+    .map(n => Number(n.trim()));
+
+  const negatives = numbersArray.filter(n => n < 0);
+  if (negatives.length > 0) {
+    throw new Error(`negative numbers not allowed ${negatives.join(",")}`);
+  }
+
+  return numbersArray.reduce((sum, n) => sum + n, 0);
 }
