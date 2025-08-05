@@ -17,4 +17,32 @@ describe('String Calculator', () => {
   it('returns 6 for "1\\n2,3"', () => {
     expect(add("1\n2,3")).toBe(6);
   });
+
+  it('returns sum for custom delimiter ";"', () => {
+    expect(add("//;\n1;2")).toBe(3);
+  });
+
+  it('returns sum for custom delimiter "|"', () => {
+    expect(add("//|\n4|5|6")).toBe(15);
+  });
+
+  it('returns sum for custom delimiter "."', () => {
+    expect(add("//.\n1.2.3")).toBe(6);
+  });
+
+  it('returns sum for numeric delimiter "1"', () => {
+    expect(add("//1\n2112")).toBe(4); // splits as "2", "1", "2"
+  });
+
+  it('returns sum for space delimiter', () => {
+    expect(add("// \n3 4 5")).toBe(12);
+  });
+
+  it('returns sum for multi-character delimiter "sep"', () => {
+    expect(add("//sep\n10sep20sep30")).toBe(60);
+  });
+
+  it('falls back to default delimiters if custom delimiter is missing', () => {
+    expect(add("//\n1,2,3")).toBe(6);
+  });
 });

@@ -3,14 +3,27 @@ export function add(numbers) {
     return 0;
   }
 
-  // Replace literal "\n" with actual newline if needed
+   // Replace literal "\n" with actual newline if needed
   const sanitized = numbers.replace(/\\n/g, '\n');
 
-  // Split by comma or newline
-  const parts = sanitized.split(/[\n,]/);
+  let delimiter = /[,\n]/; // default delimiters
+  let numberSection = sanitized;
 
-  // Convert to numbers and sum
-  return parts
+  // Check for custom delimiter
+  if (sanitized.startsWith("//")) {
+    const delimiterMatch = sanitized.match(/^\/\/(.+)\n/);
+    if (delimiterMatch?.[1]) {
+      const customDelimiter = delimiterMatch[1];
+      delimiter = new RegExp(`[${customDelimiter}]`);
+      numberSection = sanitized.slice(delimiterMatch[0].length);
+    } else {
+      // No valid delimiter found, fallback to default
+      numberSection = sanitized.replace(/^\/\/\n/, '');
+    }
+  }
+
+  return numberSection
+    .split(delimiter)
     .map(n => Number(n.trim()))
     .reduce((sum, n) => sum + n, 0);
 }
